@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080a0f">
+  <title>RWL Movies</title>
+  <link rel="icon" href="assets/rwl-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="assets/rwl-icon.png" alt="RWL"><strong>RWL Movies</strong></div>
+  <nav><button class="active">الرئيسية</button><button id="moviesNav">الأفلام</button><button id="tvNav">المسلسلات</button></nav>
+  <div class="tools"><button id="searchBtn" title="بحث">⌕</button><button id="langBtn">AR</button><button id="settingsBtn" title="الإعدادات">⚙</button></div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="heroShade"></div>
+  <div class="heroContent">
+    <div class="meta" id="heroMeta">RWL Movies Web</div>
+    <h1 id="heroTitle">RWL MOVIES</h1>
+    <p id="heroOverview">اربط الموقع مع RWL Gateway لتحميل الأفلام الحقيقية.</p>
+    <div class="actions"><button class="primary" id="heroDetails">ⓘ التفاصيل</button><button class="secondary" id="heroRefresh">↻ تحديث</button></div>
+  </div>
+</section>
+
+<main>
+  <section class="section"><div class="sectionHead"><h2 id="trendingTitle">الأكثر مشاهدة هذا الأسبوع</h2><span id="status">غير متصل</span></div><div class="row" id="trendingRow"></div></section>
+  <section class="section"><div class="sectionHead"><h2 id="moviesTitle">أفلام شائعة</h2></div><div class="row" id="moviesRow"></div></section>
+  <section class="section"><div class="sectionHead"><h2 id="tvTitle">مسلسلات شائعة</h2></div><div class="row" id="tvRow"></div></section>
+</main>
+
+<div class="overlay" id="detailsOverlay">
+  <div class="modal detail"><button class="close" data-close="detailsOverlay">×</button><div class="detailBackdrop" id="detailBackdrop"></div><div class="detailBody">
+    <div class="meta" id="detailMeta"></div><h2 id="detailTitle"></h2><p id="detailOverview"></p>
+    <h3>المصادر</h3><div class="sources"><div class="source disabled"><b>RWL DIRECT</b><small>ربط مصادر التشغيل في الخطوة التالية</small></div></div>
+  </div></div>
+</div>
+
+<div class="overlay" id="searchOverlay">
+  <div class="modal search"><button class="close" data-close="searchOverlay">×</button><h2>بحث</h2><input id="searchInput" placeholder="اكتب اسم فيلم أو مسلسل…" autocomplete="off"><div class="searchGrid" id="searchGrid"></div></div>
+</div>
+
+<div class="overlay" id="settingsOverlay">
+  <div class="modal settings"><button class="close" data-close="settingsOverlay">×</button><img src="assets/rwl-icon.png" class="settingsIcon"><h2>ربط RWL Gateway</h2><p>الصق الرابط العام للـGateway فقط. لا تضع RWL_PLAYBACK_KEY أو أي Secret داخل الموقع.</p><label>Gateway URL</label><input id="gatewayInput" inputmode="url" placeholder="https://rwl-movies-gateway.xxxxx.workers.dev"><div class="actions"><button class="primary" id="saveGateway">حفظ واختبار</button><button class="secondary" id="clearGateway">مسح</button></div><div class="connection" id="connection"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
