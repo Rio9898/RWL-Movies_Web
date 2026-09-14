@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080A0F" />
+  <title>RWL Movies — Web Prototype</title>
+  <link rel="icon" href="assets/rwl-icon.png" />
+  <style>
+    :root{
+      --bg:#080A0F; --bg2:#0B0D12; --surface:#15171F; --surface2:#1A1D27;
+      --text:#fff; --muted:rgba(255,255,255,.62); --soft:rgba(255,255,255,.10);
+      --red:#E50914; --red2:#9A0710; --gold:#FFD700; --purple:#7C5CFF;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+    body{overflow-x:hidden;background:
+      radial-gradient(circle at 12% 14%,rgba(124,92,255,.12),transparent 30%),
+      radial-gradient(circle at 85% 8%,rgba(229,9,20,.10),transparent 27%),var(--bg)}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .app{min-height:100vh}
+    .topbar{position:fixed;inset:0 0 auto 0;height:72px;z-index:50;display:flex;align-items:center;gap:22px;padding:10px clamp(16px,3vw,48px);background:linear-gradient(180deg,rgba(8,10,15,.98),rgba(8,10,15,.88));border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(18px)}
+    .brand{display:flex;align-items:center;gap:10px;min-width:max-content}
+    .brand img{width:38px;height:38px;object-fit:contain}
+    .brand strong{font-size:20px;letter-spacing:-.5px}
+    .nav{display:flex;gap:6px;align-items:center;flex:1}
+    .nav button,.icon-btn{border:0;background:transparent;color:rgba(255,255,255,.68);padding:10px 12px;border-radius:12px;transition:.2s}
+    .nav button:hover,.nav button.active,.icon-btn:hover{background:rgba(255,255,255,.07);color:white}
+    .tools{display:flex;gap:5px}
+    .icon-btn{font-size:20px;min-width:42px}
+    .hero{position:relative;min-height:720px;padding:142px clamp(22px,5vw,78px) 70px;display:flex;align-items:flex-end;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;background:
+      linear-gradient(90deg,var(--bg) 0%,rgba(8,10,15,.78) 32%,rgba(8,10,15,.12) 70%),
+      linear-gradient(0deg,var(--bg) 0%,rgba(8,10,15,.42) 35%,transparent 68%),
+      radial-gradient(circle at 74% 35%,rgba(196,72,76,.75),transparent 20%),
+      radial-gradient(circle at 74% 46%,rgba(53,78,122,.72),transparent 30%),
+      linear-gradient(120deg,#11141e,#2a1730 43%,#2f5259);transform:scale(1.02)}
+    .hero-bg:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to left,#000,transparent 70%)}
+    .hero-content{position:relative;z-index:2;width:min(650px,100%)}
+    .eyebrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:14px;font-weight:700}
+    .rating{color:var(--gold)}
+    .genres{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 12px}
+    .chip{padding:6px 11px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:999px;font-size:12px;color:rgba(255,255,255,.76)}
+    .hero h1{font-size:clamp(44px,7vw,82px);line-height:.95;margin:8px 0 18px;letter-spacing:-3px}
+    .hero p{font-size:16px;line-height:1.85;color:rgba(255,255,255,.66);max-width:580px}
+    .hero-actions{display:flex;gap:12px;margin-top:25px;flex-wrap:wrap}
+    .primary,.secondary{border:0;border-radius:14px;padding:13px 20px;font-weight:800;display:inline-flex;align-items:center;gap:9px}
+    .primary{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:0 10px 35px rgba(229,9,20,.22)}
+    .secondary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);color:white;backdrop-filter:blur(10px)}
+    .preview-card{position:absolute;z-index:2;left:clamp(18px,4vw,64px);top:160px;width:320px;aspect-ratio:16/9;border-radius:16px;background:linear-gradient(135deg,#1c2438,#472029);border:1px solid rgba(255,255,255,.14);box-shadow:0 22px 60px rgba(0,0,0,.45);overflow:hidden}
+    html[dir=rtl] .preview-card{left:auto;right:clamp(18px,4vw,64px)}
+    html[dir=rtl] .hero-bg{transform:scale(1.02) scaleX(-1)}
+    .preview-card:before{content:"TRAILER";position:absolute;inset:0;display:grid;place-items:center;font-weight:900;letter-spacing:5px;color:rgba(255,255,255,.18);font-size:36px}
+    .preview-card .mute{position:absolute;bottom:10px;left:10px;width:35px;height:35px;border:0;border-radius:50%;color:white;background:rgba(0,0,0,.52)}
+    .content{position:relative;z-index:3;margin-top:-18px;padding:0 clamp(16px,4vw,58px) 90px}
+    .section{margin:0 0 36px}
+    .section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:14px;gap:15px}
+    .section h2{font-size:22px;margin:0;letter-spacing:-.5px}
+    .section-head button{border:0;background:none;color:rgba(255,255,255,.48);font-weight:700}
+    .row{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(145px,15vw,205px);gap:14px;overflow:auto;padding:2px 2px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
+    .row::-webkit-scrollbar{display:none}
+    .card{position:relative;aspect-ratio:2/3;border-radius:16px;overflow:hidden;background:#171A23;border:1px solid rgba(255,255,255,.06);scroll-snap-align:start;transition:.25s;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+    .card:hover{transform:translateY(-6px) scale(1.018);border-color:rgba(255,255,255,.2);box-shadow:0 18px 45px rgba(0,0,0,.42)}
+    .poster{position:absolute;inset:0;display:flex;align-items:flex-end;padding:15px;background-size:cover;background-position:center}
+    .poster:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(5,6,10,.96))}
+    .poster-copy{position:relative;z-index:2}
+    .poster-copy strong{font-size:15px;display:block;margin-bottom:4px;text-shadow:0 2px 15px #000}
+    .poster-copy span{font-size:11px;color:rgba(255,255,255,.56)}
+    .badge{position:absolute;z-index:4;top:10px;right:10px;background:rgba(8,10,15,.82);padding:5px 7px;border-radius:8px;font-size:10px;font-weight:800;border:1px solid rgba(255,255,255,.08)}
+    html[dir=rtl] .badge{right:auto;left:10px}
+    .rank{position:absolute;z-index:3;bottom:-10px;left:3px;font-size:82px;font-weight:1000;line-height:1;color:#0b0d12;-webkit-text-stroke:2px rgba(255,255,255,.75);filter:drop-shadow(0 4px 8px #000)}
+    html[dir=rtl] .rank{left:auto;right:3px}
+    .continue{grid-auto-columns:min(360px,78vw)}
+    .continue .card{aspect-ratio:16/9}
+    .progress{position:absolute;z-index:5;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.14)}
+    .progress i{display:block;height:100%;background:var(--red);width:62%}
+    .modal,.player-modal,.search-modal{position:fixed;inset:0;z-index:100;display:none;background:rgba(0,0,0,.74);backdrop-filter:blur(16px);padding:clamp(12px,3vw,36px);align-items:center;justify-content:center}
+    .modal.open,.player-modal.open,.search-modal.open{display:flex}
+    .detail{width:min(1020px,100%);max-height:92vh;overflow:auto;background:linear-gradient(180deg,#151923,#0b0d12);border:1px solid rgba(255,255,255,.1);border-radius:24px;box-shadow:0 30px 100px rgba(0,0,0,.7);position:relative}
+    .detail-hero{min-height:390px;padding:48px;display:flex;align-items:flex-end;background:linear-gradient(90deg,rgba(11,13,18,.98),rgba(11,13,18,.2)),linear-gradient(0deg,#0b0d12,transparent 55%),linear-gradient(135deg,#183d45,#47232d 55%,#1a1e2a)}
+    .close{position:absolute;z-index:5;top:18px;left:18px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.5);color:white;font-size:21px}
+    html[dir=rtl] .close{left:18px;right:auto}
+    .detail h2{font-size:48px;margin:8px 0 10px}
+    .detail-body{padding:0 48px 42px}
+    .source-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+    .source{padding:15px;border-radius:14px;background:#15171f;border:1px solid rgba(255,255,255,.08);text-align:right;color:white;transition:.2s}
+    .source:hover{border-color:rgba(229,9,20,.55);background:#1c1f29}
+    .source b{display:block;font-size:13px}.source small{display:block;margin-top:4px;color:rgba(255,255,255,.5)}
+    .player-shell{width:min(1180px,100%);aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#020304;border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 100px #000;position:relative}
+    .video-stage{position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,#212b3a,#07090e 55%,#020304);display:grid;place-items:center}
+    .video-stage:before{content:"RWL";font-size:clamp(70px,15vw,180px);font-weight:1000;letter-spacing:-8px;color:rgba(255,255,255,.025)}
+    .player-top{position:absolute;top:0;left:0;right:0;z-index:3;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#000b,transparent)}
+    .player-top .title{font-weight:800}.player-top .sub{font-size:12px;color:rgba(255,255,255,.5);margin-top:3px}
+    .player-top button,.controls button{border:0;background:rgba(20,22,29,.78);color:white;border-radius:11px;padding:9px 12px}
+    .center-play{position:absolute;inset:0;display:grid;place-items:center;z-index:2;pointer-events:none}.center-play button{pointer-events:auto;width:72px;height:72px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.12);backdrop-filter:blur(10px);color:white;font-size:30px}
+    .controls{position:absolute;z-index:4;left:0;right:0;bottom:0;padding:38px 18px 18px;background:linear-gradient(transparent,#000d)}
+    .timeline{height:5px;border-radius:99px;background:rgba(255,255,255,.2);overflow:hidden;margin-bottom:13px}.timeline i{display:block;width:36%;height:100%;background:var(--red)}
+    .control-row{display:flex;gap:8px;align-items:center}.control-row .spacer{flex:1}.time{font-size:12px;color:rgba(255,255,255,.6)}
+    .searchbox{width:min(720px,100%);background:#11141b;border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:18px;box-shadow:0 30px 100px #000}
+    .searchbox input{width:100%;border:0;outline:0;background:#1b1f29;color:white;border-radius:14px;padding:16px 18px;font-size:17px}
+    .search-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}
+    .mini{height:110px;border-radius:12px;background:linear-gradient(135deg,#24324b,#6a283b);display:flex;align-items:flex-end;padding:10px;font-weight:800;font-size:12px}
+    .toast{position:fixed;z-index:200;left:50%;bottom:28px;transform:translate(-50%,30px);opacity:0;transition:.25s;background:#1c202a;border:1px solid rgba(255,255,255,.1);color:white;border-radius:13px;padding:11px 16px;box-shadow:0 12px 35px #0008}.toast.show{opacity:1;transform:translate(-50%,0)}
+    .footer{text-align:center;color:rgba(255,255,255,.28);font-size:12px;padding:15px 20px 45px}
+    @media(max-width:850px){
+      .nav{display:none}.topbar{height:64px}.brand strong{font-size:17px}.hero{min-height:650px;padding-top:110px}.preview-card{display:none}.hero h1{letter-spacing:-2px}.source-list{grid-template-columns:1fr}.detail-hero{padding:28px;min-height:330px}.detail h2{font-size:38px}.detail-body{padding:0 28px 30px}.search-results{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:520px){.hero{padding-inline:18px}.content{padding-inline:14px}.row{grid-auto-columns:142px}.continue{grid-auto-columns:78vw}.hero p{font-size:14px}.tools .lang{display:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><img src="assets/rwl-icon.png" alt="RWL"><strong>RWL Movies</strong></div>
+    <nav class="nav">
+      <button class="active" data-label-ar="الرئيسية" data-label-en="Home">الرئيسية</button>
+      <button data-label-ar="الأفلام" data-label-en="Movies">الأفلام</button>
+      <button data-label-ar="المسلسلات" data-label-en="TV Shows">المسلسلات</button>
+      <button data-label-ar="قائمتي" data-label-en="My List">قائمتي</button>
+    </nav>
+    <div class="tools">
+      <button class="icon-btn" id="searchBtn" title="Search">⌕</button>
+      <button class="icon-btn lang" id="langBtn" title="Language">AR</button>
+      <button class="icon-btn" id="settingsBtn" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="preview-card"><button class="mute">⌁</button></div>
+    <div class="hero-content">
+      <div class="eyebrow"><span class="rating">★ 8.6</span><span>2026</span><span>2h 11m</span><span>4K</span></div>
+      <div class="genres"><span class="chip">دراما</span><span class="chip">غموض</span><span class="chip">خيال علمي</span></div>
+      <h1>COLONY</h1>
+      <p id="heroDesc">مدينة معزولة، إشارة غامضة، وقرار واحد يغيّر مصير الجميع. نموذج مؤقت لواجهة RWL Movies على الويب بنفس روح التطبيق.</p>
+      <div class="hero-actions">
+        <button class="primary" id="watchHero">▶ <span data-ar="شاهد الآن" data-en="Watch Now">شاهد الآن</span></button>
+        <button class="secondary" id="detailsHero">ⓘ <span data-ar="التفاصيل" data-en="Details">التفاصيل</span></button>
+      </div>
+    </div>
+  </section>
+
+  <main class="content">
+    <section class="section">
+      <div class="section-head"><h2 data-ar="الأكثر مشاهدة هذا الأسبوع" data-en="Top 10 This Week">الأكثر مشاهدة هذا الأسبوع</h2><button data-ar="عرض الكل" data-en="See all">عرض الكل</button></div>
+      <div class="row" id="topRow"></div>
+    </section>
+    <section class="section">
+      <div class="section-head"><h2 data-ar="أكمل المشاهدة" data-en="Continue Watching">أكمل المشاهدة</h2><button data-ar="إدارة" data-en="Manage">إدارة</button></div>
+      <div class="row continue" id="continueRow"></div>
+    </section>
+    <section class="section">
+      <div class="section-head"><h2 data-ar="أفلام مختارة لك" data-en="Picked for You">أفلام مختارة لك</h2><button data-ar="عرض الكل" data-en="See all">عرض الكل</button></div>
+      <div class="row" id="movieRow"></div>
+    </section>
+  </main>
+  <div class="footer">RWL Movies Web Prototype • واجهة تجريبية فقط</div>
+</div>
+
+<div class="modal" id="detailModal">
+  <div class="detail">
+    <button class="close" id="closeDetails">×</button>
+    <div class="detail-hero">
+      <div>
+        <div class="eyebrow"><span class="rating">★ 8.6 IMDb</span><span>2026</span><span>4K</span></div>
+        <h2 id="detailTitle">COLONY</h2>
+        <p style="max-width:650px;color:rgba(255,255,255,.62);line-height:1.8" id="detailDesc">نموذج لصفحة التفاصيل في نسخة الويب، مع نفس الأجواء الداكنة والأزرار والمصادر.</p>
+        <div class="hero-actions"><button class="primary" id="playFromDetails">▶ تشغيل</button><button class="secondary">＋ قائمتي</button></div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <h3>المصادر</h3>
+      <div class="source-list">
+        <button class="source" data-provider="Cinejoy"><b>RWL DIRECT</b><small>Cinejoy</small></button>
+        <button class="source" data-provider="VidAPI"><b>RWL DIRECT</b><small>VidAPI</small></button>
+        <button class="source" data-provider="VidSrc"><b>RWL DIRECT</b><small>VidSrc</small></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="player-modal" id="playerModal">
+  <div class="player-shell" id="playerShell">
+    <div class="video-stage"></div>
+    <div class="player-top">
+      <div><div class="title" id="playerTitle">COLONY</div><div class="sub" id="playerProvider">RWL DIRECT • Cinejoy</div></div>
+      <button id="closePlayer">✕</button>
+    </div>
+    <div class="center-play"><button id="centerPlay">▶</button></div>
+    <div class="controls">
+      <div class="timeline"><i id="timelineProgress"></i></div>
+      <div class="control-row">
+        <button id="playBtn">▶</button><button id="backBtn">−10</button><button id="forwardBtn">+10</button><span class="time" id="timeLabel">42:11 / 1:57:20</span><span class="spacer"></span><button id="sourceBtn">RWL DIRECT</button><button id="copyBtn">⧉</button><button id="fullBtn">⛶</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="search-modal" id="searchModal">
+  <div class="searchbox">
+    <input id="searchInput" autocomplete="off" placeholder="ابحث عن فيلم أو مسلسل..." />
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const movies = [
+    ['COLONY','#2c5364','#203a43','2026 • Mystery'],['AFTERLIGHT','#512b58','#a23b72','2025 • Drama'],['ORBIT','#152d49','#1d6a96','2026 • Sci‑Fi'],['NO SIGNAL','#3b1f2b','#8f3d4e','2025 • Thriller'],['THE LAST HARBOR','#1b4332','#52796f','2024 • Drama'],['ECHO 9','#2f2f3f','#6d597a','2026 • Sci‑Fi'],['NORTHLINE','#1f2937','#4b5563','2025 • Action'],['MIRAGE','#4a2d55','#b56576','2026 • Mystery'],['EMBER','#4c1d16','#b45309','2025 • Drama'],['BLUE HOUR','#172554','#2563eb','2026 • Crime']
+  ];
+  const more = [['DEEP STATIC','#17202a','#34495e','2026 • Thriller'],['RED ROOM','#3b0b12','#8b1e2d','2025 • Mystery'],['PARALLEL','#203b46','#3b6978','2026 • Sci‑Fi'],['DUST CITY','#4a3f35','#9c6644','2024 • Drama'],['ZERO DAY','#121826','#334155','2026 • Action'],['MOTION','#1f2937','#7c3aed','2025 • Drama']];
+  let currentTitle='COLONY', currentProvider='Cinejoy', playing=false, elapsed=2531;
+  const q=s=>document.querySelector(s), qa=s=>[...document.querySelectorAll(s)];
+  function posterCard(m,i,rank=false,cont=false){
+    const [title,c1,c2,meta]=m;
+    return `<article class="card" data-title="${title}" data-c1="${c1}" data-c2="${c2}"><div class="poster" style="background:radial-gradient(circle at 68% 22%,rgba(255,255,255,.22),transparent 16%),linear-gradient(155deg,${c1},${c2})"><div class="badge">★ ${(7.5+(i%13)/10).toFixed(1)}</div>${rank?`<div class="rank">${i+1}</div>`:''}<div class="poster-copy"><strong>${title}</strong><span>${meta}</span></div>${cont?'<div class="progress"><i style="width:'+(35+(i*13)%55)+'%"></i></div>':''}</div></article>`;
+  }
+  q('#topRow').innerHTML=movies.map((m,i)=>posterCard(m,i,true,false)).join('');
+  q('#movieRow').innerHTML=more.map((m,i)=>posterCard(m,i,false,false)).join('');
+  q('#continueRow').innerHTML=movies.slice(0,5).map((m,i)=>posterCard(m,i,false,true)).join('');
+
+  function toast(t){const el=q('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700)}
+  function openDetails(title='COLONY'){currentTitle=title;q('#detailTitle').textContent=title;q('#detailDesc').textContent=`${title} — صفحة تفاصيل تجريبية لنسخة RWL Movies Web. التصميم مأخوذ من روح التطبيق الحالي.`;q('#detailModal').classList.add('open')}
+  function openPlayer(provider=currentProvider){currentProvider=provider;q('#playerTitle').textContent=currentTitle;q('#playerProvider').textContent=`RWL DIRECT • ${provider}`;q('#playerModal').classList.add('open')}
+  function close(el){q(el).classList.remove('open')}
+  document.addEventListener('click',e=>{const card=e.target.closest('.card'); if(card) openDetails(card.dataset.title);});
+  q('#detailsHero').onclick=()=>openDetails('COLONY'); q('#watchHero').onclick=()=>{currentTitle='COLONY';openPlayer('Cinejoy')};
+  q('#closeDetails').onclick=()=>close('#detailModal'); q('#closePlayer').onclick=()=>close('#playerModal');
+  q('#playFromDetails').onclick=()=>{close('#detailModal');openPlayer('Cinejoy')};
+  qa('.source').forEach(b=>b.onclick=()=>{currentProvider=b.dataset.provider;toast('تم اختيار '+currentProvider);close('#detailModal');openPlayer(currentProvider)});
+  function togglePlay(){playing=!playing;q('#playBtn').textContent=q('#centerPlay').textContent=playing?'❚❚':'▶'; if(playing){q('#centerPlay').style.opacity='.12'}else{q('#centerPlay').style.opacity='1'}}
+  q('#playBtn').onclick=togglePlay;q('#centerPlay').onclick=togglePlay;
+  function updateTime(){const total=7040;elapsed=Math.max(0,Math.min(total,elapsed));q('#timelineProgress').style.width=(elapsed/total*100)+'%';const f=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;q('#timeLabel').textContent=`${f(elapsed)} / ${f(total)}`}
+  q('#backBtn').onclick=()=>{elapsed-=10;updateTime()};q('#forwardBtn').onclick=()=>{elapsed+=10;updateTime()};updateTime();
+  q('#copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);toast('تم نسخ الرابط')}catch{toast('الرابط جاهز للنسخ')}};
+  q('#fullBtn').onclick=async()=>{try{if(!document.fullscreenElement)await q('#playerShell').requestFullscreen();else await document.exitFullscreen()}catch{toast('المتصفح منع وضع ملء الشاشة')}};
+  q('#sourceBtn').onclick=()=>{const p=['Cinejoy','VidAPI','VidSrc'];currentProvider=p[(p.indexOf(currentProvider)+1)%p.length];q('#playerProvider').textContent=`RWL DIRECT • ${currentProvider}`;toast('المصدر: '+currentProvider)};
+  q('#searchBtn').onclick=()=>{q('#searchModal').classList.add('open');setTimeout(()=>q('#searchInput').focus(),80)};
+  q('#searchModal').onclick=e=>{if(e.target===q('#searchModal'))close('#searchModal')};
+  q('#detailModal').onclick=e=>{if(e.target===q('#detailModal'))close('#detailModal')};
+  q('#playerModal').onclick=e=>{if(e.target===q('#playerModal'))close('#playerModal')};
+  q('#searchInput').oninput=e=>{const s=e.target.value.trim().toUpperCase();const list=[...movies,...more].filter(m=>!s||m[0].includes(s)).slice(0,8);q('#searchResults').innerHTML=list.map(m=>`<div class="mini" data-search-title="${m[0]}" style="background:linear-gradient(135deg,${m[1]},${m[2]})">${m[0]}</div>`).join('');qa('[data-search-title]').forEach(x=>x.onclick=()=>{close('#searchModal');openDetails(x.dataset.searchTitle)})};q('#searchInput').dispatchEvent(new Event('input'));
+  q('#settingsBtn').onclick=()=>toast('الإعدادات — نموذج مؤقت');
+  q('#langBtn').onclick=()=>{const html=document.documentElement;const en=html.lang==='ar';html.lang=en?'en':'ar';html.dir=en?'ltr':'rtl';q('#langBtn').textContent=en?'EN':'AR';qa('[data-ar]').forEach(el=>el.textContent=en?el.dataset.en:el.dataset.ar);qa('[data-label-ar]').forEach(el=>el.textContent=en?el.dataset.labelEn:el.dataset.labelAr);q('#heroDesc').textContent=en?'An isolated city, a strange signal, and one choice that changes everything. A temporary RWL Movies web prototype inspired by the current app.':'مدينة معزولة، إشارة غامضة، وقرار واحد يغيّر مصير الجميع. نموذج مؤقت لواجهة RWL Movies على الويب بنفس روح التطبيق.';q('#searchInput').placeholder=en?'Search movies or shows...':'ابحث عن فيلم أو مسلسل...'};
+  window.addEventListener('keydown',e=>{if(e.key==='Escape'){qa('.open').forEach(x=>x.classList.remove('open'))}if(e.key.toLowerCase()==='f'&&q('#playerModal').classList.contains('open'))q('#fullBtn').click()});
+</script>
+</body>
+</html>
