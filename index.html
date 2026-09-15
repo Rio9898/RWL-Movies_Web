@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#050609">
+  <meta name="color-scheme" content="dark light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RWL Movies">
+  <meta name="description" content="RWL Movies — cinema, TV, anime, manga, books, music and live content in one premium experience.">
+  <title>RWL Movies</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/rwl-icon.png">
+  <link rel="icon" href="assets/rwl-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="ambient" class="ambient"></div>
+  <div id="pageGlow" class="pageGlow"></div>
+
+  <header class="glass topbar" id="topbar">
+    <button class="brand bare" data-route="home" aria-label="RWL Movies Home">
+      <span class="brandIcon"><img src="assets/rwl-icon.png" alt="RWL Movies"></span>
+      <span class="brandText"><b>RWL Movies</b><small id="brandSub">Premium</small></span>
+    </button>
+    <nav id="desktopNav" class="desktopNav" aria-label="Primary"></nav>
+    <div id="topTitle" class="topTitle">الرئيسية</div>
+    <div class="topActions">
+      <button class="iconBtn" id="searchBtn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+      </button>
+      <button class="iconBtn" id="settingsBtn" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-4v-.09A1.7 1.7 0 0 0 9 19.35a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.63 15 1.7 1.7 0 0 0 3.07 14H3v-4h.09A1.7 1.7 0 0 0 4.65 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.63 1.7 1.7 0 0 0 10 3.07V3h4v.09A1.7 1.7 0 0 0 15 4.65a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.37 9 1.7 1.7 0 0 0 20.93 10H21v4h-.09A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="view" class="view" aria-live="polite"></main>
+  <nav id="dock" class="glass dock" aria-label="Navigation"></nav>
+
+  <div class="overlay" id="searchOverlay">
+    <div class="modal panel searchSheet">
+      <button class="circleClose" data-close="searchOverlay" aria-label="Close">×</button>
+      <div class="searchHero">
+        <span class="searchHeroIcon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg></span>
+        <div><h2>بحث RWL</h2><p>أفلام، مسلسلات، أشخاص وأكثر</p></div>
+      </div>
+      <div class="searchBox"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input id="searchInput" class="searchInput" autocomplete="off" placeholder="اكتب اسم فيلم، مسلسل أو ممثل…"></div>
+      <div id="searchGrid" class="searchResults"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="settingsOverlay">
+    <div class="modal panel settingsSheet">
+      <button class="circleClose" data-close="settingsOverlay" aria-label="Close">×</button>
+      <div class="settingsHero">
+        <img src="assets/rwl-icon.png" alt="RWL">
+        <div><h2>RWL Movies</h2><p id="settingsSubtitle">إعدادات التجربة</p></div>
+      </div>
+      <div id="settingsContent"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="subtitleOverlay">
+    <div class="subtitleSheet">
+      <div class="sheetHandle"></div>
+      <div class="subtitleHead">
+        <div><h2 id="subtitleSheetTitle">الترجمة</h2><p id="subtitleSheetHint">اختر اللغة والنسخة المناسبة</p></div>
+        <button id="closeSubtitleSheet" class="sheetClose">×</button>
+      </div>
+      <div class="subtitleTools">
+        <label class="subUploadBtn"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 20h14"/></svg><span>رفع ترجمة</span><input id="subtitleFile" type="file" accept=".srt,.vtt,text/vtt,text/plain" hidden></label>
+        <button id="subtitleStyleBtn" class="subToolBtn"><svg viewBox="0 0 24 24"><path d="M4 6h16M8 6v12m8-12v12M5 18h14"/></svg><span>تخصيص</span></button>
+      </div>
+      <div class="subtitleSync">
+        <button id="subSheetBack">−0.25</button>
+        <div><b>مزامنة الترجمة</b><span id="subSheetOffset">0.00s</span></div>
+        <button id="subSheetForward">+0.25</button>
+      </div>
+      <div class="subtitleTransport">
+        <button id="subPlayerBack" aria-label="Back 10"><svg viewBox="0 0 32 32"><path d="M10 9a10 10 0 1 1-2 12"/><path d="M10 4v5H5"/><text x="16" y="20">10</text></svg></button>
+        <button id="subPlayerPlay" class="subPlay" aria-label="Play/Pause"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        <button id="subPlayerForward" aria-label="Forward 10"><svg viewBox="0 0 32 32"><path d="M22 9a10 10 0 1 0 2 12"/><path d="M22 4v5h5"/><text x="16" y="20">10</text></svg></button>
+      </div>
+      <div class="subtitleSearchWrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input id="subtitleSearch" class="searchInput" placeholder="ابحث في اللغات…"></div>
+      <div id="subtitleLanguageList" class="subtitleLanguageList"></div>
+    </div>
+  </div>
+
+  <div class="overlay playerOverlay" id="playerOverlay">
+    <div class="playerShell" id="playerShell">
+      <div class="videoStage" id="videoStage">
+        <video id="webPlayer" playsinline webkit-playsinline x-webkit-airplay="allow" preload="metadata"></video>
+        <div id="tapLeft" class="tapZone tapLeft"></div>
+        <div id="tapRight" class="tapZone tapRight"></div>
+        <div class="playerChrome" id="playerChrome">
+          <div class="playerTopV9">
+            <button class="roundControl" id="closePlayer" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            <div class="playerIdentity"><b id="playerTitle">RWL Movies</b><span><span id="playerServer"></span><i>•</i><span id="playerLane">RWL DIRECT</span></span></div>
+            <div class="playerTopActions">
+              <button class="roundControl" id="airPlayBtn" aria-label="AirPlay"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="m8 21 4-4 4 4"/></svg></button>
+              <button class="roundControl" id="nativeFullBtn" aria-label="Native Player"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 8h8v8H8z"/></svg></button>
+            </div>
+          </div>
+          <div class="centerTransport">
+            <button id="back10Btn" class="transportSide" aria-label="Back 10"><svg viewBox="0 0 64 64"><path d="M18 18a22 22 0 1 1-4 26"/><path d="M18 8v10H8"/><text x="32" y="39">10</text></svg></button>
+            <button id="centerPlay" class="centerPlay" aria-label="Play"><svg id="centerPlayIcon" viewBox="0 0 64 64"><path d="M24 17 48 32 24 47Z"/></svg></button>
+            <button id="forward10Btn" class="transportSide" aria-label="Forward 10"><svg viewBox="0 0 64 64"><path d="M46 18a22 22 0 1 0 4 26"/><path d="M46 8v10h10"/><text x="32" y="39">10</text></svg></button>
+          </div>
+          <div class="playerGestureHint"><span>‹‹ 10</span><b>اضغط مطولاً للتسريع 2×</b><span>10 ››</span></div>
+          <button id="skipIntroBtn" class="skipPill">تخطي المقدمة</button>
+          <button id="skipCreditsBtn" class="skipPill creditsPill">تخطي النهاية</button>
+          <div class="playerBottomV9">
+            <div class="timelineWrap"><input id="seekBar" class="seekBarV9" type="range" min="0" max="1000" value="0"><div class="timeLineText"><span id="timeText">00:00 / 00:00</span><span id="speedIndicator"></span></div></div>
+            <div class="bottomActionsV9">
+              <div class="bottomLeft">
+                <button id="playPauseBtn" class="mediaIconBtn"><svg viewBox="0 0 24 24"><path class="playPath" d="M8 5v14l11-7z"/></svg></button>
+                <button id="subtitleBtn" class="mediaIconBtn labelled"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 11h4M7 15h7M15 11h2"/></svg><span>CC</span></button>
+                <button id="audioBtn" class="mediaIconBtn labelled"><svg viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Z"/><path d="M16 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/></svg><span>AUDIO</span></button>
+                <button id="speedBtn" class="mediaTextBtn">1×</button>
+                <button id="qualityBtn" class="mediaTextBtn">AUTO</button>
+              </div>
+              <div class="bottomRight">
+                <button id="pipBtn" class="mediaIconBtn" aria-label="Picture in Picture"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1"/></svg></button>
+                <button id="downloadBtn" class="mediaIconBtn"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M5 20h14"/></svg></button>
+                <button id="fullScreenBtn" class="mediaIconBtn"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="floatingMenu" class="floatingMenuV9"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

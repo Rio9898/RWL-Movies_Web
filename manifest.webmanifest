@@ -1,0 +1,14 @@
+{
+  "name": "RWL Movies",
+  "short_name": "RWL Movies",
+  "description": "A premium all-in-one media experience.",
+  "start_url": "./#home",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050609",
+  "theme_color": "#050609",
+  "icons": [
+    {"src":"assets/rwl-icon.png","sizes":"1024x1024","type":"image/png","purpose":"any maskable"}
+  ]
+}
