@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#080A0F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RWL Movies">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>RWL Movies</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/rwl-icon.png">
+  <link rel="icon" href="assets/rwl-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="ambient" class="ambient"></div>
+<header class="glass topbar">
+  <button class="brand bare" data-nav="home" aria-label="Home"><img src="assets/rwl-icon.png" alt="RWL"><span>RWL Movies</span></button>
+  <div class="topTitle" id="topTitle">الرئيسية</div>
+  <div class="topActions">
+    <button class="iconBtn" id="globalSearchBtn" title="Search">⌕</button>
+    <button class="iconBtn" id="settingsBtn" title="Settings">⚙</button>
+  </div>
+</header>
+
+<div id="app" class="appShell">
+  <main id="view" class="view"></main>
+</div>
+
+<nav id="dock" class="glass dock" aria-label="RWL Dock"></nav>
+
+<!-- DETAILS -->
+<div class="overlay" id="detailsOverlay">
+  <div class="modal detailsModal">
+    <button class="circleClose" data-close="detailsOverlay">×</button>
+    <div class="detailBackdrop" id="detailBackdrop"></div>
+    <div class="detailBody">
+      <div class="eyebrow" id="detailMeta"></div>
+      <div class="detailHeading"><h1 id="detailTitle"></h1><button id="favoriteBtn" class="pill">♡ قائمتي</button></div>
+      <p id="detailOverview"></p>
+      <div class="episodePicker" id="episodePicker" hidden>
+        <label><span id="seasonLabel">الموسم</span><select id="seasonSelect"></select></label>
+        <label><span id="episodeLabel">الحلقة</span><select id="episodeSelect"></select></label>
+        <button class="pill" id="reloadSources">↻ تحديث</button>
+      </div>
+      <div class="sourceHeader"><h3 id="sourcesTitle">المصادر</h3><span id="sourcesStatus"></span></div>
+      <section class="sourceLane" id="directLane" hidden><h4>RWL DIRECT</h4><div class="sources" id="directSources"></div></section>
+      <section class="sourceLane" id="totLane" hidden><h4>RWL TOT</h4><div class="sources" id="totSources"></div></section>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYER -->
+<div class="overlay playerOverlay" id="playerOverlay">
+  <div class="modal playerModal">
+    <button class="circleClose playerClose" id="closePlayer">×</button>
+    <div class="playerHeader"><div><strong id="playerTitle">RWL Movies</strong><small id="playerServer"></small></div><div id="playerLane" class="laneBadge">RWL DIRECT</div></div>
+    <div class="videoStage" id="videoStage">
+      <video id="webPlayer" playsinline webkit-playsinline x-webkit-airplay="allow" preload="metadata"></video>
+      <button class="seekTap left" id="tapBack" aria-label="Back 10 seconds"><span>↶ 10</span></button>
+      <button class="seekTap right" id="tapForward" aria-label="Forward 10 seconds"><span>10 ↷</span></button>
+      <div class="videoCenter"><button id="centerPlay" class="bigPlay">▶</button></div>
+      <div class="videoControls" id="videoControls">
+        <input id="seekBar" class="seekBar" type="range" min="0" max="1000" value="0">
+        <div class="controlRow">
+          <div class="controlGroup">
+            <button id="playPauseBtn" class="controlBtn">▶</button>
+            <button id="back10Btn" class="controlBtn">↶10</button>
+            <button id="forward10Btn" class="controlBtn">10↷</button>
+            <span id="timeText" class="timeText">00:00 / 00:00</span>
+          </div>
+          <div class="controlGroup">
+            <button id="muteBtn" class="controlBtn">🔊</button>
+            <input id="volumeBar" class="volumeBar" type="range" min="0" max="1" value="1" step="0.05">
+            <button id="qualityBtn" class="controlBtn">AUTO</button>
+            <button id="nativeFullBtn" class="controlBtn" title="iPhone Player">▣</button>
+            <button id="fullScreenBtn" class="controlBtn">⛶</button>
+          </div>
+        </div>
+      </div>
+      <div id="qualityMenu" class="qualityMenu"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="overlay" id="searchOverlay">
+  <div class="modal searchModal">
+    <button class="circleClose" data-close="searchOverlay">×</button>
+    <h2 id="searchHeading">بحث RWL</h2>
+    <input id="searchInput" class="searchInput" placeholder="فيلم، مسلسل…" autocomplete="off">
+    <div class="mediaGrid" id="searchGrid"></div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="overlay" id="settingsOverlay">
+  <div class="modal settingsModal">
+    <button class="circleClose" data-close="settingsOverlay">×</button>
+    <div class="settingsHero"><img src="assets/rwl-icon.png" alt="RWL"><div><h2>RWL Movies</h2><p>Settings · Web</p></div></div>
+    <div id="settingsContent"></div>
+  </div>
+</div>
+
+<!-- MUSIC MINI PLAYER -->
+<div id="miniPlayer" class="glass miniPlayer" hidden>
+  <img id="miniCover" alt="">
+  <div class="miniMeta"><b id="miniTitle"></b><small id="miniArtist"></small></div>
+  <button id="miniPlay">▶</button>
+  <input id="miniSeek" type="range" min="0" max="1000" value="0">
+  <audio id="musicAudio" preload="metadata"></audio>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
